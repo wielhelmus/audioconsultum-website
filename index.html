@@ -1,44 +1,383 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Consultum Logo</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            background: linear-gradient(to top, transparent, black);
-        }
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-        .email-block {
-            margin-top: 20px;
-            font-size: 1.2em;
-        }
-        .email-block span {
-            color: black;
-        }
-        .email-block a {
-            color: black;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Audio Consultum</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0e0e;
+      --surface: #161616;
+      --border: rgba(255,255,255,0.07);
+      --text: #e8e4de;
+      --muted: rgba(232,228,222,0.45);
+      --accent: #c8a96e;
+      --accent-dim: rgba(200,169,110,0.15);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      gap: 3rem;
+    }
+
+    /* subtle grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.4;
+      z-index: 0;
+    }
+
+    .logo-wrap {
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(-12px);
+      animation: fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.1s forwards;
+    }
+
+    .logo-wrap img {
+      max-width: 320px;
+      width: 100%;
+      display: block;
+    }
+
+    /* divider */
+    .divider {
+      position: relative;
+      z-index: 1;
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.5s forwards;
+    }
+
+    /* form card */
+    .form-card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 440px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2.5rem 2.5rem 2rem;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.4s forwards;
+    }
+
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--accent), transparent);
+    }
+
+    .form-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.8rem;
+      text-align: center;
+    }
+
+    .field {
+      margin-bottom: 1.2rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      padding: 0.5rem 0 0.6rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+      caret-color: var(--accent);
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: rgba(232,228,222,0.2);
+      font-weight: 200;
+    }
+
+    input:focus, textarea:focus {
+      border-bottom-color: var(--accent);
+    }
+
+    textarea {
+      resize: none;
+      height: 88px;
+      line-height: 1.6;
+    }
+
+    .btn {
+      margin-top: 1.6rem;
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      padding: 0.85rem 1rem;
+      cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:hover {
+      background: var(--accent-dim);
+    }
+
+    .btn:active {
+      transform: scale(0.99);
+    }
+
+    /* success state */
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 1rem 0 0.5rem;
+      color: var(--accent);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+    }
+
+    .success-msg.show { display: block; }
+
+    /* captcha */
+    .captcha-field { margin-top: 0.4rem; }
+
+    .captcha-box {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      border: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      user-select: none;
+      transition: border-color 0.3s;
+      position: relative;
+    }
+
+    .captcha-box:hover { border-color: rgba(200,169,110,0.3); }
+    .captcha-box.error { border-color: #c0392b; }
+    .captcha-box.verified { border-color: rgba(200,169,110,0.5); cursor: default; }
+
+    .captcha-checkbox {
+      width: 20px;
+      height: 20px;
+      border: 1px solid rgba(232,228,222,0.3);
+      flex-shrink: 0;
+      position: relative;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .captcha-checkbox.checking {
+      border-color: transparent;
+    }
+
+    .captcha-checkbox.checked {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .captcha-checkbox.checked::after {
+      content: '';
+      position: absolute;
+      left: 5px; top: 2px;
+      width: 7px; height: 11px;
+      border-right: 1.5px solid var(--accent);
+      border-bottom: 1.5px solid var(--accent);
+      transform: rotate(45deg);
+      animation: checkDraw 0.25s ease forwards;
+    }
+
+    @keyframes checkDraw {
+      from { opacity: 0; transform: rotate(45deg) scale(0.5); }
+      to   { opacity: 1; transform: rotate(45deg) scale(1); }
+    }
+
+    .captcha-label {
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      flex: 1;
+      transition: color 0.3s;
+    }
+
+    .captcha-spinner {
+      width: 16px; height: 16px;
+      border: 1.5px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      display: none;
+      animation: spin 0.7s linear infinite;
+    }
+
+    .captcha-spinner.active { display: block; }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 500px) {
+      .form-card { padding: 2rem 1.5rem 1.5rem; }
+      .logo-wrap img { max-width: 240px; }
+    }
+  </style>
 </head>
 <body>
-    <img src="audioconsultum-logo-3.png" alt="Audio Consultum Logo">
-    <div class="email-block">
-        <span>Contact us at:</span> <a href="mailto:info@audioconsultum.nl">info@audioconsultum.nl</a>
-    </div>
+
+  <div class="logo-wrap">
+    <img src="https://audioconsultum.nl/audioconsultum-logo-3.png" alt="Audio Consultum" />
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="form-card">
+    <p class="form-title">Neem contact op</p>
+
+    <form id="contactForm" action="mailto:info@audioconsultum.nl" method="POST" enctype="text/plain" novalidate>
+
+      <div class="field">
+        <label for="name">Naam</label>
+        <input type="text" id="name" name="Naam" placeholder="Uw volledige naam" required />
+      </div>
+
+      <div class="field">
+        <label for="email">E-mailadres</label>
+        <input type="email" id="email" name="Email" placeholder="uw@email.nl" required />
+      </div>
+
+      <div class="field">
+        <label for="subject">Onderwerp</label>
+        <input type="text" id="subject" name="Onderwerp" placeholder="Waar gaat uw bericht over?" />
+      </div>
+
+      <div class="field">
+        <label for="message">Bericht</label>
+        <textarea id="message" name="Bericht" placeholder="Uw bericht…" required></textarea>
+      </div>
+
+      <div class="field captcha-field">
+        <div class="captcha-box" id="captchaBox" onclick="toggleCaptcha()">
+          <div class="captcha-checkbox" id="captchaCheck"></div>
+          <span class="captcha-label" id="captchaLabel">Ik ben geen robot</span>
+          <div class="captcha-spinner" id="captchaSpinner"></div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn">Versturen</button>
+    </form>
+
+    <p class="success-msg" id="successMsg">Bedankt — uw bericht is verzonden.</p>
+  </div>
+
+  <script>
+    const form = document.getElementById('contactForm');
+    const success = document.getElementById('successMsg');
+    let captchaVerified = false;
+
+    function toggleCaptcha() {
+      if (captchaVerified) return;
+      const box      = document.getElementById('captchaBox');
+      const check    = document.getElementById('captchaCheck');
+      const label    = document.getElementById('captchaLabel');
+      const spinner  = document.getElementById('captchaSpinner');
+
+      box.classList.remove('error');
+      check.classList.add('checking');
+      spinner.classList.add('active');
+      label.textContent = 'Verificatie…';
+
+      setTimeout(() => {
+        spinner.classList.remove('active');
+        check.classList.remove('checking');
+        check.classList.add('checked');
+        label.textContent = 'Geverifieerd';
+        box.classList.add('verified');
+        captchaVerified = true;
+      }, 900);
+    }
+
+    function highlightError(el) {
+      el.style.borderBottomColor = '#c0392b';
+      setTimeout(() => el.style.borderBottomColor = '', 1400);
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name    = document.getElementById('name').value.trim();
+      const email   = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      let valid = true;
+      if (!name)    { highlightError(document.getElementById('name'));    valid = false; }
+      if (!email)   { highlightError(document.getElementById('email'));   valid = false; }
+      if (!message) { highlightError(document.getElementById('message')); valid = false; }
+
+      if (!captchaVerified) {
+        document.getElementById('captchaBox').classList.add('error');
+        setTimeout(() => document.getElementById('captchaBox').classList.remove('error'), 1400);
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      form.submit();
+      setTimeout(() => {
+        form.style.display = 'none';
+        success.classList.add('show');
+      }, 300);
+    });
+  </script>
+
 </body>
 </html>
