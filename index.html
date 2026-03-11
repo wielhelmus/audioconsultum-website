@@ -15,7 +15,8 @@
       --text: #e8e4de;
       --muted: rgba(232,228,222,0.45);
       --accent: #c8a96e;
-      --accent-dim: rgba(200,169,110,0.15);
+      --linkedin: #0A66C2;
+      --linkedin-dim: rgba(10,102,194,0.12);
     }
 
     html, body {
@@ -36,7 +37,6 @@
       gap: 3rem;
     }
 
-    /* subtle grain overlay */
     body::before {
       content: '';
       position: fixed;
@@ -61,7 +61,6 @@
       display: block;
     }
 
-    /* divider */
     .divider {
       position: relative;
       z-index: 1;
@@ -72,8 +71,7 @@
       animation: fadeUp 0.6s ease 0.5s forwards;
     }
 
-    /* form card */
-    .form-card {
+    .card {
       position: relative;
       z-index: 1;
       width: 100%;
@@ -84,9 +82,10 @@
       opacity: 0;
       transform: translateY(16px);
       animation: fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.4s forwards;
+      text-align: center;
     }
 
-    .form-card::before {
+    .card::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
@@ -94,181 +93,57 @@
       background: linear-gradient(to right, transparent, var(--accent), transparent);
     }
 
-    .form-title {
+    .card-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.1rem;
       font-weight: 400;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 1.8rem;
-      text-align: center;
+      margin-bottom: 0.9rem;
     }
 
-    .field {
-      margin-bottom: 1.2rem;
-    }
-
-    label {
-      display: block;
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+    .card-intro {
+      font-size: 0.82rem;
       color: var(--muted);
-      margin-bottom: 0.4rem;
+      letter-spacing: 0.04em;
+      line-height: 1.7;
+      margin-bottom: 2rem;
     }
 
-    input, textarea {
+    .btn-linkedin {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
       width: 100%;
+      padding: 0.85rem 1rem;
       background: transparent;
-      border: none;
-      border-bottom: 1px solid var(--border);
-      color: var(--text);
-      font-family: 'Jost', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 300;
-      padding: 0.5rem 0 0.6rem;
-      outline: none;
-      transition: border-color 0.3s ease;
-      caret-color: var(--accent);
-    }
-
-    input::placeholder, textarea::placeholder {
-      color: rgba(232,228,222,0.2);
-      font-weight: 200;
-    }
-
-    input:focus, textarea:focus {
-      border-bottom-color: var(--accent);
-    }
-
-    textarea {
-      resize: none;
-      height: 88px;
-      line-height: 1.6;
-    }
-
-    .btn {
-      margin-top: 1.6rem;
-      width: 100%;
-      background: transparent;
-      border: 1px solid var(--accent);
-      color: var(--accent);
+      border: 1px solid var(--linkedin);
+      color: #5b9fd6;
       font-family: 'Jost', sans-serif;
       font-size: 0.7rem;
       font-weight: 400;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      padding: 0.85rem 1rem;
-      cursor: pointer;
+      text-decoration: none;
       transition: background 0.25s ease, color 0.25s ease;
-      position: relative;
-      overflow: hidden;
     }
 
-    .btn:hover {
-      background: var(--accent-dim);
+    .btn-linkedin:hover {
+      background: var(--linkedin-dim);
+      color: #82b8e8;
     }
 
-    .btn:active {
-      transform: scale(0.99);
-    }
-
-    /* success state */
-    .success-msg {
-      display: none;
-      text-align: center;
-      padding: 1rem 0 0.5rem;
-      color: var(--accent);
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
-      letter-spacing: 0.08em;
-    }
-
-    .success-msg.show { display: block; }
-
-    /* captcha */
-    .captcha-field { margin-top: 0.4rem; }
-
-    .captcha-box {
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
-      border: 1px solid var(--border);
-      padding: 0.75rem 1rem;
-      cursor: pointer;
-      user-select: none;
-      transition: border-color 0.3s;
-      position: relative;
-    }
-
-    .captcha-box:hover { border-color: rgba(200,169,110,0.3); }
-    .captcha-box.error { border-color: #c0392b; }
-    .captcha-box.verified { border-color: rgba(200,169,110,0.5); cursor: default; }
-
-    .captcha-checkbox {
-      width: 20px;
-      height: 20px;
-      border: 1px solid rgba(232,228,222,0.3);
-      flex-shrink: 0;
-      position: relative;
-      transition: border-color 0.3s, background 0.3s;
-    }
-
-    .captcha-checkbox.checking {
-      border-color: transparent;
-    }
-
-    .captcha-checkbox.checked {
-      border-color: var(--accent);
-      background: var(--accent-dim);
-    }
-
-    .captcha-checkbox.checked::after {
-      content: '';
-      position: absolute;
-      left: 5px; top: 2px;
-      width: 7px; height: 11px;
-      border-right: 1.5px solid var(--accent);
-      border-bottom: 1.5px solid var(--accent);
-      transform: rotate(45deg);
-      animation: checkDraw 0.25s ease forwards;
-    }
-
-    @keyframes checkDraw {
-      from { opacity: 0; transform: rotate(45deg) scale(0.5); }
-      to   { opacity: 1; transform: rotate(45deg) scale(1); }
-    }
-
-    .captcha-label {
-      font-size: 0.78rem;
-      letter-spacing: 0.06em;
-      color: var(--text);
-      flex: 1;
-      transition: color 0.3s;
-    }
-
-    .captcha-spinner {
-      width: 16px; height: 16px;
-      border: 1.5px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      display: none;
-      animation: spin 0.7s linear infinite;
-    }
-
-    .captcha-spinner.active { display: block; }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    .btn-linkedin:active { transform: scale(0.99); }
+    .btn-linkedin svg { flex-shrink: 0; opacity: 0.85; }
 
     @keyframes fadeUp {
       to { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 500px) {
-      .form-card { padding: 2rem 1.5rem 1.5rem; }
+      .card { padding: 2rem 1.5rem 1.5rem; }
       .logo-wrap img { max-width: 240px; }
     }
   </style>
@@ -281,103 +156,17 @@
 
   <div class="divider"></div>
 
-  <div class="form-card">
-    <p class="form-title">Neem contact op</p>
+  <div class="card">
+    <p class="card-title">Neem contact op</p>
+    <p class="card-intro">Stuur mij een bericht via LinkedIn — ik reageer zo snel mogelijk.</p>
 
-    <form id="contactForm" action="mailto:info@audioconsultum.nl" method="POST" enctype="text/plain" novalidate>
-
-      <div class="field">
-        <label for="name">Naam</label>
-        <input type="text" id="name" name="Naam" placeholder="Uw volledige naam" required />
-      </div>
-
-      <div class="field">
-        <label for="email">E-mailadres</label>
-        <input type="email" id="email" name="Email" placeholder="uw@email.nl" required />
-      </div>
-
-      <div class="field">
-        <label for="subject">Onderwerp</label>
-        <input type="text" id="subject" name="Onderwerp" placeholder="Waar gaat uw bericht over?" />
-      </div>
-
-      <div class="field">
-        <label for="message">Bericht</label>
-        <textarea id="message" name="Bericht" placeholder="Uw bericht…" required></textarea>
-      </div>
-
-      <div class="field captcha-field">
-        <div class="captcha-box" id="captchaBox" onclick="toggleCaptcha()">
-          <div class="captcha-checkbox" id="captchaCheck"></div>
-          <span class="captcha-label" id="captchaLabel">Ik ben geen robot</span>
-          <div class="captcha-spinner" id="captchaSpinner"></div>
-        </div>
-      </div>
-
-      <button type="submit" class="btn">Versturen</button>
-    </form>
-
-    <p class="success-msg" id="successMsg">Bedankt — uw bericht is verzonden.</p>
+    <a class="btn-linkedin" href="https://www.linkedin.com/in/bakkerwillem/" target="_blank" rel="noopener noreferrer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      </svg>
+      Verbinden op LinkedIn
+    </a>
   </div>
-
-  <script>
-    const form = document.getElementById('contactForm');
-    const success = document.getElementById('successMsg');
-    let captchaVerified = false;
-
-    function toggleCaptcha() {
-      if (captchaVerified) return;
-      const box      = document.getElementById('captchaBox');
-      const check    = document.getElementById('captchaCheck');
-      const label    = document.getElementById('captchaLabel');
-      const spinner  = document.getElementById('captchaSpinner');
-
-      box.classList.remove('error');
-      check.classList.add('checking');
-      spinner.classList.add('active');
-      label.textContent = 'Verificatie…';
-
-      setTimeout(() => {
-        spinner.classList.remove('active');
-        check.classList.remove('checking');
-        check.classList.add('checked');
-        label.textContent = 'Geverifieerd';
-        box.classList.add('verified');
-        captchaVerified = true;
-      }, 900);
-    }
-
-    function highlightError(el) {
-      el.style.borderBottomColor = '#c0392b';
-      setTimeout(() => el.style.borderBottomColor = '', 1400);
-    }
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const name    = document.getElementById('name').value.trim();
-      const email   = document.getElementById('email').value.trim();
-      const message = document.getElementById('message').value.trim();
-
-      let valid = true;
-      if (!name)    { highlightError(document.getElementById('name'));    valid = false; }
-      if (!email)   { highlightError(document.getElementById('email'));   valid = false; }
-      if (!message) { highlightError(document.getElementById('message')); valid = false; }
-
-      if (!captchaVerified) {
-        document.getElementById('captchaBox').classList.add('error');
-        setTimeout(() => document.getElementById('captchaBox').classList.remove('error'), 1400);
-        valid = false;
-      }
-
-      if (!valid) return;
-
-      form.submit();
-      setTimeout(() => {
-        form.style.display = 'none';
-        success.classList.add('show');
-      }, 300);
-    });
-  </script>
 
 </body>
 </html>
